@@ -10,5 +10,27 @@ jobs:
   say-hello:
     runs-on: ubuntu-latest
     steps: 
-      - run: echo "Hello, Github Actions!"
+      # - run: echo "Hello, Github Actions!"
+      # if we wanted to add a name to this step it would be
+      - name: Say hello
+        run: echo "hello, github actions!"
+
+  # Job to build and tes our C code
+  needs: [say-hello] # This job depends on say-hello's job
+  runs-on: ubuntu-latest
+  steps:
+    # Use github.com/actions/checkout to checkout this repo
+    - name: Check out this repo
+      uses: actions/checkout@v6
+
+    # Install necessary packages
+    - name: Install dependencies
+      run: sudo apt install -y build essential python3 # allows us to run cmds on the OS
+
+    # See where we are in the VM
+    - run: pwd
+
+    # Run our test
+    - name: Run test
+      run: python3 test.py
       
